@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V-Mart Customers</title>
+    <link rel="stylesheet" href="customers.css" />
+    <link rel="stylesheet" href="notifications.css" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+    <!-- ===== SIDEBAR (same as Dashboard) ===== -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">🛍️</span>
+            <span class="brand-text">V-Mart</span>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html">
+                    <i class="fas fa-receipt"></i>
+                    <span>Billing</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html">
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="customers.html">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="history.html">
+                    <i class="fas fa-history"></i>
+                    <span>Bill History</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="analytics.html">
+                    <i class="fas fa-chart-bar"></i> <span>Analytics</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <p>Professionally designed by <span>Nandini Mondal</span></p>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1>👥 Customer Management</h1>
+                <p id="currentDate" class="date-text"></p>
+            </div>
+            <div class="header-right">
+                <span class="store-badge">Kazon Gate, Burdwan</span>
+            </div>
+        </header>
+
+        <!-- ===== SEARCH & FILTERS ===== -->
+        <section class="card filters-card">
+            <div class="filters-row">
+
+                <!-- Search -->
+                <div class="filter-group search-group">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by Name or Phone..." oninput="renderTable()" />
+                </div>
+
+                <!-- Sort -->
+                <div class="filter-group">
+                    <label for="sortBy">🔽 Sort By</label>
+                    <select id="sortBy" onchange="renderTable()">
+                        <option value="name">Name (A-Z)</option>
+                        <option value="nameDesc">Name (Z-A)</option>
+                        <option value="totalDesc">Highest Spent</option>
+                        <option value="totalAsc">Lowest Spent</option>
+                        <option value="lastPurchase">Last Purchase</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== CUSTOMERS TABLE ===== -->
+        <section class="card table-card">
+            <div class="card-header">
+                <h2><i class="fas fa-list"></i> All Customers</h2>
+                <span id="customerCount" class="badge">0 customers</span>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Total Orders</th>
+                            <th>Total Spent (₹)</th>
+                            <th>Last Purchase</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTableBody">
+                        <!-- Rows inserted by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="noCustomersMsg" style="text-align:center; color:#64748b; padding:30px 10px; display:none;">
+                <i class="fas fa-users" style="font-size: 40px; display:block; margin-bottom:10px; opacity:0.4;"></i>
+                No customers yet. Customers appear automatically when bills are generated!
+            </p>
+        </section>
+
+    </main>
+
+    <!-- ===== CUSTOMER PROFILE MODAL ===== -->
+    <div id="customerModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-circle"></i> <span id="modalCustomerName">Customer Profile</span></h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody" class="modal-body">
+                <!-- Filled dynamically by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== EDIT CUSTOMER MODAL ===== -->
+    <div id="editModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content" style="max-width:450px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Edit Customer</h2>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-form">
+                    <div class="form-group">
+                        <label for="editName">Customer Name</label>
+                        <input type="text" id="editName" placeholder="Full Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editPhone">Phone Number</label>
+                        <input type="text" id="editPhone" placeholder="Phone" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email (optional)</label>
+                        <input type="email" id="editEmail" placeholder="email@example.com" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="saveEditCustomer()">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button class="btn-secondary" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="customers.js"></script>
+    <script src="notifications.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
+

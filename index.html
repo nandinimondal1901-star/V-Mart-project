@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>V Mart Billing</title>
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="design_branding.css">
+  <link rel="stylesheet" href="notifications.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+  <body>
+
+    <!-- ===== SIDEBAR (same as Dashboard) ===== -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">🛍️</span>
+            <span class="brand-text">V-Mart</span>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="index.html">
+                    <i class="fas fa-receipt"></i>
+                    <span>Billing</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html">
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="customers.html">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="history.html">
+                    <i class="fas fa-history"></i>
+                    <span>Bill History</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="analytics.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <p>Professionally designed by <span>Nandini Mondal</span></p>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+  <div class="container">
+    <div class="designed-by">Professionally designed by <span>Nandini Mondal</span></div>
+    <h1>🛍️ V Mart Billing</h1>
+    <p>Kazon Gate, Burdwan</p>
+
+
+    <div class="card">
+      <h3>Stock Info (Category-wise)</h3>
+      <div id="stockList"></div>
+    </div>
+
+    <div class="card">
+      <h3>Create Bill</h3>
+
+      <input type="text" id="customer" placeholder="Customer Name">
+      <input type="text" id="phone" placeholder="Phone Number">
+
+      <!-- Products loaded dynamically from script.js -->
+      <select id="item"></select>
+
+      <input type="number" id="qty" placeholder="Quantity">
+
+      <button onclick="buy()">Generate Bill</button>
+    </div>
+
+    <div class="card">
+      <h3>Admin: Add Stock</h3>
+
+      <select id="adminItem"></select>
+      <input type="number" id="adminQty" placeholder="Stock received (e.g., 5)">
+
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button onclick="adminUpdateStock('add')">➕ Add to Stock</button>
+        <button onclick="adminUpdateStock('set')">📌 Set Stock</button>
+      </div>
+
+      <p style="margin-top:10px; font-size:12px; opacity:0.9;">Example: 5 shirts came, stock becomes old + 5 (or exact set if Set Stock).</p>
+    </div>
+
+    <div class="card">
+      <h3>Return / Exchange</h3>
+
+      <input type="text" id="returnCustomer" placeholder="Customer Name (optional)" style="width:200px;">
+      <input type="text" id="returnPhone" placeholder="Phone Number (optional)" style="width:200px;">
+
+      <select id="returnItem"></select>
+      <input type="number" id="returnQty" placeholder="Return Qty">
+      <input type="text" id="returnReason" placeholder="Reason (optional)">
+
+      <button onclick="returnOrExchange()">↩️ Process Return / Exchange</button>
+    </div>
+
+    <div class="invoice-box" id="invoice"></div>
+
+
+    <button onclick="downloadPDF()">📄 Download PDF</button>
+  </div>
+
+    </main>
+
+  <!-- PDF / Screenshot libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+<!-- JS -->
+  <script src="script.js"></script>
+  <script src="notifications.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
+

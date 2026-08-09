@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V-Mart Bill History</title>
+    <link rel="stylesheet" href="history.css" />
+    <link rel="stylesheet" href="notifications.css" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+    <!-- ===== SIDEBAR (same as Dashboard) ===== -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">🛍️</span>
+            <span class="brand-text">V-Mart</span>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html">
+                    <i class="fas fa-receipt"></i>
+                    <span>Billing</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html">
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="customers.html">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="history.html">
+                    <i class="fas fa-history"></i>
+                    <span>Bill History</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="analytics.html">
+                    <i class="fas fa-chart-bar"></i> <span>Analytics</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <p>Professionally designed by <span>Nandini Mondal</span></p>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1>📜 Bill History</h1>
+                <p id="currentDate" class="date-text"></p>
+            </div>
+            <div class="header-right">
+                <span class="store-badge">Kazon Gate, Burdwan</span>
+            </div>
+        </header>
+
+        <!-- ===== FILTERS & SEARCH ===== -->
+        <section class="card filters-card">
+            <div class="filters-row">
+
+                <!-- Search by Bill ID or Customer -->
+                <div class="filter-group search-group">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by Bill ID or Customer..." oninput="renderTable()" />
+                </div>
+
+                <!-- Filter by Date -->
+                <div class="filter-group">
+                    <label for="dateFilter">📅 From Date</label>
+                    <input type="date" id="dateFrom" onchange="renderTable()" />
+                </div>
+                <div class="filter-group">
+                    <label for="dateTo">📅 To Date</label>
+                    <input type="date" id="dateTo" onchange="renderTable()" />
+                </div>
+
+                <!-- Sort -->
+                <div class="filter-group">
+                    <label for="sortOrder">🔽 Sort</label>
+                    <select id="sortOrder" onchange="renderTable()">
+                        <option value="latest">Latest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+
+                <!-- Clear Filters -->
+                <div class="filter-group filter-actions">
+                    <button class="btn-secondary" onclick="clearFilters()">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== BILLS TABLE ===== -->
+        <section class="card table-card">
+            <div class="card-header">
+                <h2><i class="fas fa-file-invoice"></i> All Bills</h2>
+                <span id="billCount" class="badge">0 bills</span>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bill ID</th>
+                            <th>Customer Name</th>
+                            <th>Date & Time</th>
+                            <th>Items</th>
+                            <th>Total Amount</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="billsTableBody">
+                        <!-- Rows inserted by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="noBillsMsg" style="text-align:center; color:#64748b; padding:30px 10px; display:none;">
+                <i class="fas fa-receipt" style="font-size: 40px; display:block; margin-bottom:10px; opacity:0.4;"></i>
+                No bills found. Generate a bill from the Billing page!
+            </p>
+        </section>
+
+    </main>
+
+    <!-- ===== BILL DETAILS MODAL ===== -->
+    <div id="billModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-receipt"></i> Bill Details</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody" class="modal-body">
+                <!-- Filled dynamically by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="printBill()">
+                    <i class="fas fa-print"></i> Print Bill
+                </button>
+                <button class="btn-secondary" onclick="closeModal()">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="history.js"></script>
+    <script src="notifications.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
+

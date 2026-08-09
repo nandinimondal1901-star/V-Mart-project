@@ -1,0 +1,24 @@
+.designed-by{
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  z-index: 9999;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px);
+  color: #e5e7eb;
+  font-family: 'Georgia','Times New Roman',serif;
+  font-style: italic;
+  font-size: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  user-select: none;
+}
+
+.designed-by span{
+  color:#fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+

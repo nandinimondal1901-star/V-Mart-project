@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V-Mart Inventory</title>
+    <link rel="stylesheet" href="inventory.css" />
+    <link rel="stylesheet" href="notifications.css" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+    <!-- ===== SIDEBAR (same as Dashboard) ===== -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">🛍️</span>
+            <span class="brand-text">V-Mart</span>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html">
+                    <i class="fas fa-receipt"></i>
+                    <span>Billing</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="inventory.html">
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="customers.html">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="history.html">
+                    <i class="fas fa-history"></i>
+                    <span>Bill History</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="analytics.html">
+                    <i class="fas fa-chart-bar"></i> <span>Analytics</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+
+<div class="sidebar-footer">
+            <p>Professionally designed by <span>Nandini Mondal</span></p>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1>📦 Inventory Management</h1>
+                <p id="currentDate" class="date-text"></p>
+            </div>
+            <div class="header-right">
+                <span class="store-badge">Kazon Gate, Burdwan</span>
+            </div>
+        </header>
+
+        <!-- ===== ADD PRODUCT FORM ===== -->
+        <section class="card form-card">
+            <div class="card-header">
+                <h2><i class="fas fa-plus-circle"></i> <span id="formTitle">Add New Product</span></h2>
+            </div>
+            <div class="form-row">
+                <!-- Product Name -->
+                <div class="form-group">
+                    <label for="prodName">Product Name</label>
+                    <input type="text" id="prodName" placeholder="e.g. T-Shirt" />
+                </div>
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="prodCategory">Category</label>
+                    <select id="prodCategory">
+                        <option value="Men Wear">Men Wear</option>
+                        <option value="Women Wear">Women Wear</option>
+                        <option value="Footwear">Footwear</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <!-- Price -->
+                <div class="form-group">
+                    <label for="prodPrice">Price (₹)</label>
+                    <input type="number" id="prodPrice" placeholder="e.g. 699" min="1" />
+                </div>
+                <!-- Stock Quantity -->
+                <div class="form-group">
+                    <label for="prodStock">Stock Quantity</label>
+                    <input type="number" id="prodStock" placeholder="e.g. 50" min="0" />
+                </div>
+                <!-- GST Rate -->
+                <div class="form-group">
+                    <label for="prodGst">GST Rate (%)</label>
+                    <select id="prodGst">
+                        <option value="5">5%</option>
+                        <option value="12">12%</option>
+                        <option value="18" selected>18%</option>
+                        <option value="28">28%</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button id="saveProductBtn" class="btn-primary" onclick="saveProduct()">
+                    <i class="fas fa-save"></i> Save Product
+                </button>
+                <button id="cancelEditBtn" class="btn-secondary" onclick="cancelEdit()" style="display:none;">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </section>
+
+        <!-- ===== SEARCH + PRODUCT TABLE ===== -->
+        <section class="card table-card">
+            <div class="card-header">
+                <h2><i class="fas fa-list"></i> All Products</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search products..." oninput="renderTable()" />
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price (₹)</th>
+                            <th>Stock</th>
+                            <th>GST</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <!-- Rows inserted by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="noProductsMsg" style="text-align:center; color:#64748b; padding:10px; display:none;">
+                No products found. Add your first product above!
+            </p>
+        </section>
+
+    </main>
+
+<script src="inventory.js"></script>
+    <script src="notifications.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
+

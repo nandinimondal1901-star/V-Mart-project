@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V-Mart Analytics</title>
+<link rel="stylesheet" href="analytics.css" />
+    <link rel="stylesheet" href="notifications.css" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- html2pdf for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">🛍️</span>
+            <span class="brand-text">V-Mart</span>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i> <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html">
+                    <i class="fas fa-receipt"></i> <span>Billing</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html">
+                    <i class="fas fa-boxes"></i> <span>Inventory</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="customers.html">
+                    <i class="fas fa-users"></i> <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="history.html">
+                    <i class="fas fa-history"></i> <span>Bill History</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="analytics.html">
+                    <i class="fas fa-chart-bar"></i> <span>Analytics</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i> <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+
+<div class="sidebar-footer">
+            <p>Professionally designed by <span>Nandini Mondal</span></p>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content" id="reportContent">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1>📊 Analytics & Reports</h1>
+                <p id="currentDate" class="date-text"></p>
+            </div>
+            <div class="header-right">
+                <span class="store-badge">Kazon Gate, Burdwan</span>
+            </div>
+        </header>
+
+        <!-- ===== FILTERS ===== -->
+        <section class="card filters-card">
+            <div class="filters-row">
+                <button class="filter-btn active" data-filter="today" onclick="applyFilter('today')">Today</button>
+                <button class="filter-btn" data-filter="week" onclick="applyFilter('week')">This Week</button>
+                <button class="filter-btn" data-filter="month" onclick="applyFilter('month')">This Month</button>
+                <button class="filter-btn" data-filter="all" onclick="applyFilter('all')">All Time</button>
+
+                <div class="filter-group custom-date">
+                    <label>From:</label>
+                    <input type="date" id="dateFrom" onchange="applyCustomFilter()" />
+                </div>
+                <div class="filter-group custom-date">
+                    <label>To:</label>
+                    <input type="date" id="dateTo" onchange="applyCustomFilter()" />
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-secondary" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                    <button class="btn-secondary" onclick="exportCSV()"><i class="fas fa-file-csv"></i> CSV</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== STAT CARDS ===== -->
+        <section class="cards-grid" id="statCards">
+            <div class="card stat-card">
+                <div class="stat-icon revenue-icon"><i class="fas fa-rupee-sign"></i></div>
+                <div class="stat-info">
+                    <h3 id="statRevenue">₹0</h3>
+                    <p>Total Revenue</p>
+                </div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon profit-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-info">
+                    <h3 id="statProfit">₹0</h3>
+                    <p>Est. Profit (10%)</p>
+                </div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon bills-icon"><i class="fas fa-file-invoice"></i></div>
+                <div class="stat-info">
+                    <h3 id="statBills">0</h3>
+                    <p>Total Bills</p>
+                </div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon customers-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <h3 id="statCustomers">0</h3>
+                    <p>Total Customers</p>
+                </div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon products-icon"><i class="fas fa-cube"></i></div>
+                <div class="stat-info">
+                    <h3 id="statProductsSold">0</h3>
+                    <p>Products Sold</p>
+                </div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-icon avg-icon"><i class="fas fa-calculator"></i></div>
+                <div class="stat-info">
+                    <h3 id="statAvgBill">₹0</h3>
+                    <p>Avg Bill Value</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CHARTS ROW 1 ===== -->
+        <div class="charts-row">
+            <section class="card chart-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> Monthly Sales</h2>
+                </div>
+                <div class="chart-wrapper"><canvas id="monthlySalesChart"></canvas></div>
+            </section>
+            <section class="card chart-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-pie"></i> Category Breakdown</h2>
+                </div>
+                <div class="chart-wrapper"><canvas id="categoryPieChart"></canvas></div>
+            </section>
+        </div>
+
+        <!-- ===== CHARTS ROW 2 ===== -->
+        <div class="charts-row">
+            <section class="card chart-card full-width">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-bar"></i> Daily Revenue</h2>
+                </div>
+                <div class="chart-wrapper"><canvas id="dailyRevenueChart"></canvas></div>
+            </section>
+        </div>
+
+        <!-- ===== TOP 5 PRODUCTS + TOP 5 CUSTOMERS ===== -->
+        <div class="charts-row">
+            <section class="card list-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-trophy"></i> Top 5 Products</h2>
+                </div>
+                <div id="topProductsList" class="list-content">
+                    <p class="no-data">No data available</p>
+                </div>
+            </section>
+            <section class="card list-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-star"></i> Top 5 Customers</h2>
+                </div>
+                <div id="topCustomersList" class="list-content">
+                    <p class="no-data">No data available</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== LOW STOCK ===== -->
+        <section class="card list-card">
+            <div class="card-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Low Stock Products</h2>
+                <span class="badge alert-badge">⚠️</span>
+            </div>
+            <div id="lowStockList" class="list-content">
+                <p class="no-data">All items well stocked ✅</p>
+            </div>
+        </section>
+
+    </main>
+
+<script src="analytics.js"></script>
+    <script src="notifications.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

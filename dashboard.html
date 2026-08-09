@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V-Mart Dashboard</title>
+<link rel="stylesheet" href="dashboard-style.css" />
+    <link rel="stylesheet" href="notifications.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">🛍️</span>
+            <span class="brand-text">V-Mart</span>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="nav-item active">
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html">
+                    <i class="fas fa-receipt"></i>
+                    <span>Billing</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html">
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="customers.html">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="history.html">
+                    <i class="fas fa-history"></i>
+                    <span>Bill History</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="analytics.html">
+                    <i class="fas fa-chart-bar"></i> <span>Analytics</span>
+                </a>
+            </li>
+<li class="nav-item">
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+
+<div class="sidebar-footer">
+            <p>Professionally designed by <span>Nandini Mondal</span></p>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1>Good Morning, Admin 👋</h1>
+                <p id="currentDate" class="date-text"></p>
+            </div>
+            <div class="header-right">
+                <span class="store-badge">Kazon Gate, Burdwan</span>
+            </div>
+        </header>
+
+        <!-- ===== SUMMARY CARDS ===== -->
+        <section class="cards-grid">
+            <div class="card summary-card">
+                <div class="card-icon sales-icon">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+                <div class="card-info">
+                    <h3 id="totalSales">₹0.00</h3>
+                    <p>Total Sales</p>
+                </div>
+            </div>
+
+            <div class="card summary-card">
+                <div class="card-icon bills-icon">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="card-info">
+                    <h3 id="totalBills">0</h3>
+                    <p>Total Bills Generated</p>
+                </div>
+            </div>
+
+            <div class="card summary-card">
+                <div class="card-icon products-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <div class="card-info">
+                    <h3 id="totalProducts">0</h3>
+                    <p>Total Products</p>
+                </div>
+            </div>
+
+            <div class="card summary-card">
+                <div class="card-icon customers-icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <div class="card-info">
+                    <h3 id="totalCustomers">0</h3>
+                    <p>Total Customers</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SALES OVERVIEW + LOW STOCK ===== -->
+        <div class="content-row">
+
+            <!-- Sales Overview -->
+            <section class="card chart-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> Sales Overview</h2>
+                    <span class="badge">This Week</span>
+                </div>
+                <div class="chart-placeholder" id="chartArea">
+                    <canvas id="salesChart" width="400" height="200"></canvas>
+                    <p class="chart-hint">📊 Sales chart rendering above</p>
+                </div>
+            </section>
+
+            <!-- Low Stock Alert -->
+            <section class="card alert-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Low Stock Alert</h2>
+                    <span class="badge alert-badge">⚠️</span>
+                </div>
+                <div id="lowStockList" class="alert-list">
+                    <p class="no-alert">No low stock items</p>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ===== RECENT BILLS TABLE ===== -->
+        <section class="card table-card">
+            <div class="card-header">
+                <h2><i class="fas fa-clock"></i> Recent Bills</h2>
+                <span class="badge">Latest 10</span>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bill No</th>
+                            <th>Customer Name</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentBillsBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center; color:#888;">No bills generated yet</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+<script src="dashboard-script.js"></script>
+    <script src="notifications.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
+
